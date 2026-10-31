@@ -1,220 +1,53 @@
-function App() {
-  return (
-    <div style={{ fontFamily: "Arial, sans-serif", background: "#f8fafc", color: "#0f172a", minHeight: "100vh" }}>
-      <header style={{ background: "white", padding: "24px 40px", borderBottom: "1px solid #e2e8f0" }}>
-        <h2 style={{ margin: 0 }}>Advisor AI Blueprint</h2>
-        <p style={{ margin: "6px 0 0", color: "#64748b" }}>
-          Simple AI workflows for financial advisors
-        </p>
-      </header>
+import React, { useMemo, useState } from 'react';
+import './App.css';
 
-      <section style={{ padding: "80px 40px", background: "white" }}>
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <p style={{ fontWeight: "bold", color: "#475569" }}>
-            Built for advisors who do not want to become tech experts
-          </p>
+const prompts = [
+  { category:'Meetings', title:'Prepare for a client review', time:'5 min', copy:'Using only the anonymized details below, draft a 30-minute client review agenda. Include a warm opening, progress review, key planning topics, questions to ask, and a next-step checklist. Do not make investment recommendations or assume facts not provided.\n\nAnonymized context: [add non-sensitive information here]' },
+  { category:'Meetings', title:'Turn notes into next steps', time:'3 min', copy:'Turn the following de-identified meeting notes into (1) an internal recap, (2) a client-friendly draft follow-up email, and (3) action items with owners and suggested timelines. Mark any missing or unverified information as [VERIFY]. Do not invent commitments.\n\nNotes: [paste sanitized notes]' },
+  { category:'Communication', title:'Explain market headlines simply', time:'4 min', copy:'Explain the following sourced market update to a general audience in 150 words or fewer. Use plain English, distinguish facts from uncertainty, avoid forecasts and performance promises, and end with two planning-focused questions. Include a [SOURCE / DATE CHECK] reminder.\n\nMarket update: [paste approved public material]' },
+  { category:'Communication', title:'Draft a thoughtful client check-in', time:'3 min', copy:'Draft a brief, warm client check-in email about [general topic]. Avoid investment advice, personalized performance claims, and pressure. Include a simple invitation to schedule a conversation. Assume no access to confidential client information.' },
+  { category:'Growth', title:'Plan a referral conversation', time:'4 min', copy:'Create three professional, low-pressure ways an advisor could ask an existing client for an introduction, subject to firm policy. Avoid incentives, testimonials, misleading claims, and any suggestion that the client must refer someone.' },
+  { category:'Growth', title:'Outline an educational seminar', time:'6 min', copy:'Create a 20-minute educational seminar outline on [topic] for [general audience]. Include learning objectives, five simple talking points, neutral discussion questions, and a compliance review checklist. No product recommendation or performance promises.' },
+  { category:'Operations', title:'Organize the week', time:'3 min', copy:'Help me organize these generic, non-confidential tasks into a weekly action plan. Group them by urgency and impact, identify dependencies, and produce a simple checklist. Do not assume task completion.\n\nTasks: [insert tasks]' },
+  { category:'Operations', title:'Simplify a complex email', time:'2 min', copy:'Rewrite the following non-confidential email so it is concise, clear, professional, and friendly. Preserve facts, do not introduce new claims, and flag any ambiguous statements.\n\nDraft: [paste sanitized draft]' },
+];
 
-          <h1 style={{ fontSize: "56px", lineHeight: "1.05", margin: "20px 0", maxWidth: "800px" }}>
-            AI made simple for financial advisors.
-          </h1>
+const workflow = [
+  { num:'01', label:'Prepare', title:'Client meeting prep', detail:'Create an agenda from de-identified notes and set better questions before a review.', category:'Meetings' },
+  { num:'02', label:'Capture', title:'Follow-up & CRM', detail:'Turn sanitized notes into a recap, a draft email, and an action checklist.', category:'Meetings' },
+  { num:'03', label:'Explain', title:'Client communication', detail:'Translate complex ideas into clear, measured language clients can understand.', category:'Communication' },
+  { num:'04', label:'Connect', title:'Business development', detail:'Draft educational outreach, referral conversations, and event outlines.', category:'Growth' },
+  { num:'05', label:'Organize', title:'Weekly operations', detail:'Plan tasks and prioritize the work that is most likely to matter.', category:'Operations' },
+  { num:'06', label:'Review', title:'Compliance checkpoints', detail:'Verify facts, protect information, and follow your firm’s approved process.', category:'Operations' },
+];
+const faqs = [
+  ['Do I need to be good at technology?', 'No. Start with one copy-and-paste prompt and a public or anonymized example. Practice with one everyday task.'],
+  ['Can I paste client names and account details?', 'Not into an unapproved tool. Use hypothetical or properly de-identified examples unless your firm explicitly authorizes a specific AI environment and data use.'],
+  ['Can I send an AI-written email directly?', 'Treat the result as a draft. Check accuracy, appropriateness, recordkeeping requirements, and your firm’s review/approval process before using it.'],
+  ['Does AI replace the advisor?', 'No. It helps draft, organize, and simplify. Suitability, recommendations, privacy, supervision, and professional judgment stay with people.'],
+];
 
-          <p style={{ fontSize: "20px", lineHeight: "1.6", color: "#475569", maxWidth: "720px" }}>
-            Practical workflows advisors can use to save time, prepare for meetings,
-            improve client communication, and follow up faster — without the technical overwhelm.
-          </p>
-
-          <button style={{
-            marginTop: "30px",
-            background: "#0f172a",
-            color: "white",
-            border: "none",
-            padding: "16px 24px",
-            borderRadius: "12px",
-            fontSize: "16px",
-            cursor: "pointer"
-          }}>
-            Explore the Advisor Blueprint
-          </button>
-        </div>
-      </section>
-
-      <section style={{ padding: "70px 40px" }}>
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <h2 style={{ fontSize: "36px", marginBottom: "16px" }}>
-            Most advisors are not short on expertise.
-          </h2>
-
-          <p style={{ fontSize: "18px", lineHeight: "1.6", color: "#475569", maxWidth: "760px" }}>
-            They are short on time. AI can help with the daily work that slows the practice down:
-            meeting prep, follow-up, client education, prospecting, and administration.
-          </p>
-
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "18px",
-            marginTop: "40px"
-          }}>
-            {[
-              "Client meeting agendas",
-              "Follow-up emails",
-              "CRM summaries",
-              "Referral language",
-              "Client education emails",
-              "Portfolio review talking points",
-              "Market commentary summaries",
-              "Prospect outreach ideas"
-            ].map((item) => (
-              <div key={item} style={{
-                background: "white",
-                padding: "20px",
-                borderRadius: "16px",
-                border: "1px solid #e2e8f0",
-                boxShadow: "0 4px 12px rgba(15,23,42,0.04)"
-              }}>
-                ✓ {item}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section style={{ padding: "70px 40px", background: "white" }}>
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <p style={{ fontWeight: "bold", color: "#64748b", textTransform: "uppercase", letterSpacing: "2px" }}>
-            The Blueprint
-          </p>
-
-          <h2 style={{ fontSize: "36px", marginBottom: "30px" }}>
-            Simple AI workflows advisors can actually use.
-          </h2>
-
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: "20px"
-          }}>
-            {[
-              {
-                title: "Prepare Faster",
-                text: "Turn rough notes, prior conversations, and client concerns into a simple meeting agenda."
-              },
-              {
-                title: "Follow Up Better",
-                text: "Convert meeting notes into recap emails, CRM notes, and next-step task lists."
-              },
-              {
-                title: "Communicate Clearly",
-                text: "Translate market noise into plain-English client communication without overcomplicating it."
-              },
-              {
-                title: "Segment Smarter",
-                text: "Group clients and prospects by needs, life stage, opportunities, and timing."
-              },
-              {
-                title: "Save Time Weekly",
-                text: "Use simple repeatable workflows to reduce admin drag and create more client-facing time."
-              },
-              {
-                title: "Stay Within Guardrails",
-                text: "Use AI for drafting and organization while keeping human judgment and compliance review in place."
-              }
-            ].map((card) => (
-              <div key={card.title} style={{
-                padding: "26px",
-                borderRadius: "18px",
-                border: "1px solid #e2e8f0",
-                background: "#f8fafc"
-              }}>
-                <h3 style={{ fontSize: "22px", marginTop: 0 }}>{card.title}</h3>
-                <p style={{ color: "#475569", lineHeight: "1.6" }}>{card.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section style={{ padding: "70px 40px" }}>
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <p style={{ fontWeight: "bold", color: "#64748b", textTransform: "uppercase", letterSpacing: "2px" }}>
-            Prompt Pack
-          </p>
-
-          <h2 style={{ fontSize: "36px", marginBottom: "30px" }}>
-            Copy, paste, and customize.
-          </h2>
-
-          {[
-            {
-              title: "Client Meeting Prep",
-              prompt: "Create a client meeting prep sheet from these notes. Include key discussion points, likely concerns, questions to ask, and follow-up items."
-            },
-            {
-              title: "Post-Meeting Follow-Up",
-              prompt: "Turn these meeting notes into a professional client follow-up email, internal CRM note, and task list."
-            },
-            {
-              title: "Market Commentary Simplifier",
-              prompt: "Explain this market update in simple client-friendly language. Avoid jargon, avoid predictions, and focus on long-term planning."
-            },
-            {
-              title: "Client Segmentation",
-              prompt: "Segment this client list into groups based on likely needs, life stage, and outreach opportunity. Recommend one communication idea for each group."
-            }
-          ].map((item) => (
-            <div key={item.title} style={{
-              background: "white",
-              padding: "24px",
-              borderRadius: "18px",
-              border: "1px solid #e2e8f0",
-              marginBottom: "18px"
-            }}>
-              <h3 style={{ marginTop: 0 }}>{item.title}</h3>
-              <p style={{
-                background: "#f1f5f9",
-                padding: "18px",
-                borderRadius: "12px",
-                lineHeight: "1.6",
-                color: "#334155"
-              }}>
-                “{item.prompt}”
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section style={{ padding: "70px 40px", background: "#0f172a", color: "white" }}>
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <h2 style={{ fontSize: "36px" }}>
-            AI is a tool, not the final approver.
-          </h2>
-
-          <p style={{ fontSize: "18px", lineHeight: "1.6", color: "#cbd5e1", maxWidth: "760px" }}>
-            Advisors should use AI to draft, summarize, organize, and simplify. Final language,
-            recommendations, client data usage, and external communications should follow firm policies
-            and human review.
-          </p>
-
-          <ul style={{ lineHeight: "2", color: "#e2e8f0", fontSize: "17px" }}>
-            <li>Do not use AI to guarantee outcomes or predict performance.</li>
-            <li>Do not share sensitive client information unless approved by firm policy.</li>
-            <li>Review and edit all AI-generated content before use.</li>
-            <li>Use approved product and market language where required.</li>
-            <li>Keep professional judgment at the center of every recommendation.</li>
-          </ul>
-        </div>
-      </section>
-
-      <footer style={{ padding: "30px 40px", color: "#64748b", fontSize: "14px" }}>
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          © 2026 Advisor AI Blueprint. Educational resource for financial professionals.
-          <br />
-          AI outputs should be reviewed according to applicable firm and compliance policies.
-        </div>
-      </footer>
-    </div>
-  );
+export default function App(){
+ const [category,setCategory] = useState('All');
+ const [query,setQuery] = useState('');
+ const [copied,setCopied] = useState(-1);
+ const [expanded,setExpanded] = useState(0);
+ const selected=useMemo(()=>prompts.map((p,index)=>({...p,index})).filter(p=>(category==='All'||p.category===category) && (p.title+' '+p.copy).toLowerCase().includes(query.toLowerCase())),[category,query]);
+ const choose=(c)=>{setCategory(c); document.querySelector('#prompt-library')?.scrollIntoView({behavior:'smooth'});};
+ async function copyPrompt(p){ try{ await navigator.clipboard.writeText(p.copy);setCopied(p.index);window.setTimeout(()=>setCopied(-1),2200);}catch{ window.prompt('Copy this prompt:',p.copy); } }
+ return <div className="site">
+  <header className="nav"><div className="shell nav-inner"><a className="brand" href="#top" aria-label="Advisor AI Blueprint home"><span className="brand-mark">A<span>✦</span></span><span><strong>Advisor AI Blueprint</strong><small>Simple tools. Smarter practice.</small></span></a><nav className="nav-links" aria-label="Main navigation"><a href="#how">How it works</a><a href="#prompt-library">Prompt library</a><a href="#resources">Free guides</a><a href="#safety">AI guardrails</a></nav><a className="nav-cta" href="#prompt-library">Try a prompt <span aria-hidden="true">↗</span></a></div></header>
+  <main id="top">
+   <section className="hero"><div className="shell hero-grid"><div className="hero-copy"><div className="eyebrow"><span className="green-dot"/> PRACTICAL AI FOR FINANCIAL ADVISORS</div><h1>Less busywork.<br/><em>More time</em> for clients.</h1><p className="hero-intro">You don’t need to become a tech expert to benefit from AI. Start with easy, real-world workflows that help your practice prepare, communicate, follow up, and stay organized.</p><div className="hero-actions"><a className="btn btn-primary" href="#prompt-library">Explore free AI prompts <span>→</span></a><a className="btn btn-secondary" href="/guides/advisor-ai-one-page.pdf" download>Download 1-page guide <span>↓</span></a></div><div className="hero-proof"><span>✓ No technical experience required</span><span>✓ Copy-and-paste examples</span><span>✓ Compliance-conscious approach</span></div></div><div className="hero-visual"><div className="visual-top"><span className="visual-label">YOUR PRACTICE, SIMPLIFIED</span><span className="visual-pulse">● WORKFLOW</span></div><div className="visual-title">From scattered tasks to a clear next step.</div><div className="flow-line"><div className="flow-icon">01</div><div><strong>Start with a task</strong><small>“I need to prep for tomorrow’s client reviews.”</small></div><span className="flow-check">✓</span></div><div className="flow-connector"/><div className="flow-line"><div className="flow-icon">02</div><div><strong>Use a simple prompt</strong><small>Copy, customize, and add safe context.</small></div><span className="flow-check">✓</span></div><div className="flow-connector"/><div className="flow-line"><div className="flow-icon">03</div><div><strong>Review your draft</strong><small>Check accuracy, privacy, and firm policies.</small></div><span className="flow-check">✓</span></div><div className="visual-bottom">AI does the first draft. <strong>You stay in control.</strong></div></div></div></section>
+   <section className="metric-strip"><div className="shell metric-inner"><div><b>01</b><span>Choose one task</span></div><div><b>02</b><span>Copy a ready-made prompt</span></div><div><b>03</b><span>Review and refine</span></div><div><b>04</b><span>Repeat what works</span></div></div></section>
+   <section id="how" className="section"><div className="shell"><div className="section-heading"><div><div className="kicker">THE BLUEPRINT</div><h2>Six simple ways to put AI to work.</h2></div><p>Focus on the everyday work that takes time away from relationships. Start small. Keep what works.</p></div><div className="workflow-grid">{workflow.map(w=><button key={w.num} className="workflow-card" onClick={()=>choose(w.category)}><span className="workflow-num">{w.num} / {w.label}</span><h3>{w.title}</h3><p>{w.detail}</p><span className="mini-link">See related prompts <span>↗</span></span></button>)}</div></div></section>
+   <section className="dark-feature"><div className="shell feature-inner"><div><div className="kicker light">THE BIG IDEA</div><h2>AI shouldn’t complicate your practice.<br/><em>It should simplify it.</em></h2></div><p>Think of AI as an assistant for the first draft — not an investment committee, compliance officer, or replacement for your expertise.</p></div></section>
+   <section id="prompt-library" className="section library-section"><div className="shell"><div className="section-heading"><div><div className="kicker">FREE PROMPT LIBRARY</div><h2>Find a prompt. Copy it. Put it to work.</h2></div><p>Every example is written for practical financial-advisor workflows. Adapt to your practice and approved tools.</p></div><div className="prompt-toolbar"><div className="chip-list" aria-label="Filter prompts">{['All','Meetings','Communication','Growth','Operations'].map(c=><button className={'chip '+(category===c?'active':'')} aria-pressed={category===c} key={c} onClick={()=>setCategory(c)}>{c}</button>)}</div><label className="search-wrap"><span aria-hidden="true">⌕</span><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search prompts..." aria-label="Search prompts"/></label></div><div className="prompt-grid">{selected.map(p=><article className="prompt-card" key={p.index}><div className="prompt-meta"><span>{p.category}</span><span>~{p.time} setup</span></div><h3>{p.title}</h3><p className="prompt-preview">{p.copy}</p><button className="copy-btn" onClick={()=>copyPrompt(p)}>{copied===p.index?'✓ Copied':'▣ Copy prompt'} <span>↗</span></button></article>)}</div>{selected.length===0&&<div className="empty">No prompts match that search. Try a different term or choose “All.”</div>}<p className="privacy-note"><strong>Before you paste:</strong> Use public, hypothetical, or appropriately de-identified information only, unless your firm has approved your AI environment for the data involved.</p></div></section>
+   <section id="resources" className="section resources"><div className="shell resource-layout"><div><div className="kicker">TAKE IT WITH YOU</div><h2>Free resources to share with your team.</h2><p>Simple PDFs you can keep, print, or use in a discussion about practice efficiency.</p></div><div className="resource-cards"><a className="resource-card" href="/guides/advisor-ai-one-page.pdf" download><div className="pdf-icon">PDF</div><div><span>QUICK START · 1 PAGE</span><h3>Advisor AI Blueprint</h3><p>The high-level framework for better meeting prep, follow-up, communication, and efficiency.</p></div><span className="resource-arrow">↓</span></a><a className="resource-card" href="/guides/ai-full-blueprint.pdf" download><div className="pdf-icon">PDF</div><div><span>DEEPER DIVE · 9 PAGES</span><h3>Full AI Revenue Operating System</h3><p>Extended workflows for advisors and wholesalers, with examples and compliance reminders.</p></div><span className="resource-arrow">↓</span></a></div></div></section>
+   <section id="safety" className="section safety"><div className="shell safety-layout"><div><div className="kicker">THE ESSENTIAL GUARDRAILS</div><h2>Use AI confidently.<br/>Keep judgment human.</h2><p>Good processes matter more than clever prompts. Follow your firm’s rules before connecting AI to real business information or sending content externally.</p></div><div className="safety-list">{[['Protect information','Never paste nonpublic client data into a tool that your firm has not authorized for that use.'],['Verify every output','AI can invent facts and sources. Check data, dates, calculations, and product claims.'],['Review communications','Follow firm approval, marketing, recordkeeping, and supervision requirements.'],['Keep advice human','Do not rely on AI to independently determine suitability, make recommendations, or promise results.']].map(([h,t],i)=><div className="safety-item" key={h}><span>0{i+1}</span><div><h3>{h}</h3><p>{t}</p></div></div>)}</div></div></section>
+   <section className="section faq-section"><div className="shell faq-layout"><div><div className="kicker">FREQUENTLY ASKED QUESTIONS</div><h2>Questions? Start here.</h2><p>For your firm’s specific rules, always consult the appropriate internal compliance and technology teams.</p></div><div className="faq-list">{faqs.map(([q,a],i)=><div className="faq-item" key={q}><button onClick={()=>setExpanded(expanded===i?-1:i)} aria-expanded={expanded===i}>{q}<span>{expanded===i?'−':'+'}</span></button>{expanded===i&&<p>{a}</p>}</div>)}</div></div></section>
+   <section className="closing"><div className="shell closing-inner"><div className="kicker light">READY TO START?</div><h2>Your next hour can be simpler.</h2><p>Pick one repetitive task. Try one prompt. Review the result. That’s how a better workflow begins.</p><a className="btn btn-light" href="#prompt-library">Explore the prompt library <span>→</span></a></div></section>
+  </main>
+  <footer><div className="shell footer-top"><a className="brand footer-brand" href="#top"><span className="brand-mark">A<span>✦</span></span><span><strong>Advisor AI Blueprint</strong><small>Simple tools. Smarter practice.</small></span></a><div className="footer-links"><a href="#how">Blueprint</a><a href="#prompt-library">Prompts</a><a href="#resources">Downloads</a><a href="#safety">Guardrails</a></div></div><div className="shell footer-bottom"><span>© {new Date().getFullYear()} Advisor AI Blueprint. Educational resource for financial professionals.</span><span>Independent educational material. Not investment, legal, or compliance advice. No affiliation or firm approval is implied.</span></div></footer>
+ </div>
 }
-
-export default App;
