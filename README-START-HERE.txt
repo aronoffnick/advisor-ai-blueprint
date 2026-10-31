@@ -1,13 +1,19 @@
-AI PRACTICE BLUEPRINT — PHASE 4 UPDATE
+AI PRACTICE BLUEPRINT — CONTENT OPTIMIZATION UPDATE
 
-Adds Advisor/Wholesaler-specific beginner/intermediate/advanced lessons and 6 interactive template builders. Existing role switch, prompts, and PDFs retained.
+Based on search-intent themes discussed: AI for financial advisors, advisor prospecting, referrals, practice management, client onboarding, client communications, and wholesaler territory productivity. These are editorial priorities, NOT verified search-volume rankings.
 
-MAC INSTALL:
-1. Download this ZIP to Downloads.
-2. Open Terminal and run:
-   cd ~/advisor-ai-blueprint && unzip -o ~/Downloads/ai-practice-blueprint-interactive-lab-upgrade.zip
-3. In Terminal, run: npm run build
-4. Open GitHub Desktop, keep changed files selected, Commit to main, then Push origin.
-5. Vercel will redeploy automatically.
+WHAT CHANGED
+- New 'Start with your problem' navigation for both Advisor and Wholesaler visitors
+- 8 additional advisor prompts and 6 additional wholesaler prompts
+- Role selection remembered locally in visitor browser
+- Updated page title and search description
+- Preserves existing training lab, interactive tools, existing prompt libraries, and PDF downloads
+- No analytics provider connected and no sensitive information transmitted by this upgrade
 
-Important: The interactive builders use local templates (no real AI integration, no server processing). Avoid sensitive client/advisor info. No email capture, user accounts, or paid services are implemented. Written walkthroughs are not videos.
+INSTALL ON MAC
+1. Download ai-practice-blueprint-optimized.zip to Downloads.
+2. In Terminal: cd ~/advisor-ai-blueprint && unzip -o ~/Downloads/ai-practice-blueprint-optimized.zip
+3. Test: npm run build
+4. GitHub Desktop: review changes, Commit to main, Push origin. Vercel redeploys.
+
+NOTE: This ZIP is an incremental overlay for the previously deployed website.
