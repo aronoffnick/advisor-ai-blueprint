@@ -1,19 +1,12 @@
-AI PRACTICE BLUEPRINT — CONTENT OPTIMIZATION UPDATE
+KEYWORD-FOCUSED UPDATE
 
-Based on search-intent themes discussed: AI for financial advisors, advisor prospecting, referrals, practice management, client onboarding, client communications, and wholesaler territory productivity. These are editorial priorities, NOT verified search-volume rankings.
+Based on themes visible in an AnswerThePublic screenshot (not verified keyword traffic volumes): meeting preparation, client emails, advisor referrals, market volatility, compliance, and wholesaler workflows.
 
-WHAT CHANGED
-- New 'Start with your problem' navigation for both Advisor and Wholesaler visitors
-- 8 additional advisor prompts and 6 additional wholesaler prompts
-- Role selection remembered locally in visitor browser
-- Updated page title and search description
-- Preserves existing training lab, interactive tools, existing prompt libraries, and PDF downloads
-- No analytics provider connected and no sensitive information transmitted by this upgrade
+INSTALL
+1. Unzip in ~/advisor-ai-blueprint (overwrite files).
+2. In Terminal: cd ~/advisor-ai-blueprint && npm run build
+3. GitHub Desktop: commit all changed files and Push origin.
+4. Confirm Vercel deployment is Ready.
 
-INSTALL ON MAC
-1. Download ai-practice-blueprint-optimized.zip to Downloads.
-2. In Terminal: cd ~/advisor-ai-blueprint && unzip -o ~/Downloads/ai-practice-blueprint-optimized.zip
-3. Test: npm run build
-4. GitHub Desktop: review changes, Commit to main, Push origin. Vercel redeploys.
-
-NOTE: This ZIP is an incremental overlay for the previously deployed website.
+No paid API required. No analytics tracking or new data collection.
+The site is still a single-page React app; adding a sitemap without the real live domain is inappropriate. Once your canonical production domain is chosen, add its absolute URL to public/sitemap.xml, register it with Google Search Console, then share that sitemap URL with AnswerThePublic.
